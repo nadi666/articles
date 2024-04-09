@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter</title>
+</head>
+<body>
+<a class="button" href="{% url 'article:article_list' %}">вернуться на главную</a>
+ <form method="POST">
+        {% csrf_token %}
+        <label for="article_title">Filter by Article Title:</label>
+        <input type="text" id="article_title" name="article_title">
+        <button type="submit">Filter</button>
+    </form>
+    {% if articles %}
+        <ul>
+            {% for article in articles %}
+                <li>
+                    <h2><i>{{ article.title }}</i></h2>
+                    <p>{{ article.desc }}</p>
+                    <ul>
+                        {% for comment in article.comments %}
+                            <li>{{ comment.text }} - {{ comment.autor_name }}</li>
+                        {% empty %}
+                            <li>No comments yet</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No articles found.</p>
+    {% endif %}
+</body>
+</html>

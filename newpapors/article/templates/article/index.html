@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Newspaper</title>
+</head>
+<body>
+<h1>Articles</h1> <a href="{% url 'article:article_create' %}">CREATE</a> / <a href="{% url 'article:article_filter' %}">FILTER</a>
+{% for article in articles %}
+    <h2><i>{{ article.title }}</i></h2>
+    <p>{{ article.desc }}</p>
+    <ul>
+        <b><i>COMMENT</i></b>
+    {% for comment in article.comment_set.all %}
+        <li>{{ comment.text }} - {{ comment.autor_name }}</li>
+    {% empty %}
+        <li>No comments yet</li>
+    {% endfor %}
+    </ul>
+    <a href="{% url 'article:article_update' article.pk %}">UPDATE</a> /
+    <form method="POST" action="{% url 'article:article_delete' article.pk %}">
+        {% csrf_token %}
+        <button type="submit">DELETE</button>
+    </form>
+{% endfor %}
+</body>
+</html>
